@@ -86,7 +86,7 @@ If your teachers send you an advice, you should to add a new remote to receive t
 > Your local repo should be clean after receive the new updates.
 
 ```bash
-  git remote add original https://github.com/sigmotoa/dev_workshop.git
+  git remote add original https://github.com/sigmotoa/dev_2026_3_workshop.git
   git pull original main
   
 ```

@@ -12,7 +12,10 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
-    
+
+    - name: Create sigmotoa.txt
+      run: echo "Saludos a @sigmotoa" > sigmotoa.txt
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:

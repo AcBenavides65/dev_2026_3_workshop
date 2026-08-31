@@ -55,19 +55,7 @@ class Conversion:
         return pies * 0.3048
     
     def decimal_a_binario(self, decimal):
-        """
-        Convierte un número decimal a su representación binaria.
-        
-        Args:
-            decimal (int): Número decimal (positivo)
-            
-        Returns:
-            str: Representación binaria como string
-            
-        Ejemplo:
-            decimal_a_binario(10) -> "1010"
-            decimal_a_binario(255) -> "11111111"
-        """
+      
         if decimal == 0:
             return "0"
         return bin(decimal)[2:]

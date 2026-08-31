@@ -1,4 +1,44 @@
 class Conversion:
+    _MORSE_MAP = {
+        "A": ".-",
+        "B": "-...",
+        "C": "-.-.",
+        "D": "-..",
+        "E": ".",
+        "F": "..-.",
+        "G": "--.",
+        "H": "....",
+        "I": "..",
+        "J": ".---",
+        "K": "-.-",
+        "L": ".-..",
+        "M": "--",
+        "N": "-.",
+        "O": "---",
+        "P": ".--.",
+        "Q": "--.-",
+        "R": ".-.",
+        "S": "...",
+        "T": "-",
+        "U": "..-",
+        "V": "...-",
+        "W": ".--",
+        "X": "-..-",
+        "Y": "-.--",
+        "Z": "--..",
+        "0": "-----",
+        "1": ".----",
+        "2": "..---",
+        "3": "...--",
+        "4": "....-",
+        "5": ".....",
+        "6": "-....",
+        "7": "--...",
+        "8": "---..",
+        "9": "----.",
+    }
+    _MORSE_REVERSE = {value: key for key, value in _MORSE_MAP.items()}
+
     def celsius_a_fahrenheit(self, celsius):
         """
         Convierte temperatura de Celsius a Fahrenheit.
@@ -15,7 +55,7 @@ class Conversion:
             celsius_a_fahrenheit(0) -> 32.0
             celsius_a_fahrenheit(100) -> 212.0
         """
-        pass
+        return (celsius * 9 / 5) + 32
     
     def fahrenheit_a_celsius(self, fahrenheit):
         """
@@ -33,7 +73,7 @@ class Conversion:
             fahrenheit_a_celsius(32) -> 0.0
             fahrenheit_a_celsius(212) -> 100.0
         """
-        pass
+        return (fahrenheit - 32) * 5 / 9
     
     def metros_a_pies(self, metros):
         """
@@ -50,7 +90,7 @@ class Conversion:
         Ejemplo:
             metros_a_pies(1) -> 3.28084
         """
-        pass
+        return metros * 3.28084
     
     def pies_a_metros(self, pies):
         """
@@ -67,7 +107,7 @@ class Conversion:
         Ejemplo:
             pies_a_metros(3.28084) -> 1.0
         """
-        pass
+        return pies * 0.3048
     
     def decimal_a_binario(self, decimal):
         """
@@ -83,7 +123,9 @@ class Conversion:
             decimal_a_binario(10) -> "1010"
             decimal_a_binario(255) -> "11111111"
         """
-        pass
+        if decimal == 0:
+            return "0"
+        return bin(decimal)[2:]
     
     def binario_a_decimal(self, binario):
         """
@@ -99,7 +141,7 @@ class Conversion:
             binario_a_decimal("1010") -> 10
             binario_a_decimal("11111111") -> 255
         """
-        pass
+        return int(binario, 2)
     
     def decimal_a_romano(self, numero):
         """
@@ -115,7 +157,19 @@ class Conversion:
             decimal_a_romano(9) -> "IX"
             decimal_a_romano(1994) -> "MCMXCIV"
         """
-        pass
+        if not 1 <= numero <= 3999:
+            raise ValueError("El número debe estar entre 1 y 3999")
+
+        valores = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+        romanos = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+        resultado = ""
+
+        for valor, romano in zip(valores, romanos):
+            while numero >= valor:
+                resultado += romano
+                numero -= valor
+
+        return resultado
     
     def romano_a_decimal(self, romano):
         """
@@ -131,7 +185,28 @@ class Conversion:
             romano_a_decimal("IX") -> 9
             romano_a_decimal("MCMXCIV") -> 1994
         """
-        pass
+        valores = {
+            "I": 1,
+            "V": 5,
+            "X": 10,
+            "L": 50,
+            "C": 100,
+            "D": 500,
+            "M": 1000,
+        }
+
+        total = 0
+        anterior = 0
+
+        for caracter in reversed(romano.upper()):
+            valor = valores[caracter]
+            if valor < anterior:
+                total -= valor
+            else:
+                total += valor
+                anterior = valor
+
+        return total
     
     def texto_a_morse(self, texto):
         """
@@ -147,7 +222,15 @@ class Conversion:
             texto_a_morse("SOS") -> "... --- ..."
             texto_a_morse("HELLO") -> ".... . .-.. .-.. ---"
         """
-        pass
+        if texto == "":
+            return ""
+
+        morse = []
+        for caracter in texto.upper():
+            if caracter in self._MORSE_MAP:
+                morse.append(self._MORSE_MAP[caracter])
+
+        return " ".join(morse)
     
     def morse_a_texto(self, morse):
         """
@@ -163,4 +246,11 @@ class Conversion:
             morse_a_texto("... --- ...") -> "SOS"
             morse_a_texto(".... . .-.. .-.. ---") -> "HELLO"
         """
-        pass
+        if morse.strip() == "":
+            return ""
+
+        texto = []
+        for codigo in morse.split():
+            texto.append(self._MORSE_REVERSE.get(codigo, ""))
+
+        return "".join(texto)
